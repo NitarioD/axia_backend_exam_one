@@ -12,10 +12,10 @@ mongoose.connect(`mongodb+srv://${process.env.DATABASE_USERNAME}:${process.env.D
 }).catch((err) => {
     console.log('something went wrong', err);  
 });
+app.use(express.json());
 app.use(cookieParser());
 app.use(userRoutes);
 app.use(postRoutes);
-app.use(express.json());
 
 app.listen(5000, () => {
     console.log('server running on port 5000');
