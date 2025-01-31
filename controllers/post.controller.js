@@ -1,6 +1,6 @@
-const postModel = require("../models/post.model");
+const postModel = require('../models/post.model');
 
-export const createPost = async (req, res) => {
+exports.createPost = async (req, res) => {
     const {creatorID, ...others} = req.body;
     const {id} = req.user;
     if (!id) {
@@ -16,7 +16,7 @@ export const createPost = async (req, res) => {
     }
 }
 
-export const deletePost = async (req, res) => {
+exports.deletePost = async (req, res) => {
     const {id} = req.params;
     const {id: userId} = req.user;
     if (!userId) {
@@ -38,7 +38,7 @@ export const deletePost = async (req, res) => {
     }
 }
 
-export const updatePost = async (req, res) => {
+exports.updatePost = async (req, res) => {
     const {id} = req.params;
     const {id: userId} = req.user;
     const {creatorID, ...others} = req.body;
@@ -61,7 +61,7 @@ export const updatePost = async (req, res) => {
     }
 }
 
-export const getAllPosts = async (req, res) => {
+exports.getAllPosts = async (req, res) => {
     try{
         const posts = await postModel.find();
         if (!posts){
@@ -73,14 +73,14 @@ export const getAllPosts = async (req, res) => {
     }
 }
 
-export const getPost = async (req, res) => {
+exports.getPost = async (req, res) => {
     const {id} =  req.params;
     try{
-        const posts = await postModel.findById(id);
+        // const posts = await postModel.findById(id);
         if (!posts){
             return res.status(400).send("no post found");
         }
-        
+
         res.status(200).json(posts);
     }catch(err){
         res.status(400).json({ message: err.message });
