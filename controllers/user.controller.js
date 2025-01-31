@@ -40,6 +40,7 @@ exports.signin = async (req, res) => {
 
     try {
         const user = await userModel.findOne({email});
+        
         if (!user) {
             return res.status(400).send("invalid credentials");
         }
@@ -49,10 +50,14 @@ exports.signin = async (req, res) => {
             return res.status(400).send("invalid credentials");
         }
 
-        res.cookie("token", jwt.sign({id: user._id}, process.env.JWT_SECRET, {httpOnly: true}));
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET)
+
+         res.cookie("token", token, {httpOnly: true, secure: process.env.NODE_ENV === "production"});
         return res.status(200).send("login successful");
     } catch (error) {
-        res.status(400).json({ message: err.message });
+        console.log(error);
+        
+        res.status(400).json({ message: error.message });
     }
 }
 
